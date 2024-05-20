@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     'users',
     'mailings',
     'cms',
-    # 'projects',
+    'projects',
+    'modules',
     'rest_framework',
     'drf_yasg',
 ]

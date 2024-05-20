@@ -13,4 +13,3 @@ class CMSAdmin(admin.ModelAdmin):
     ]
     readonly_fields = ['slug']
 
-

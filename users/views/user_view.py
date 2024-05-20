@@ -4,7 +4,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, GenericAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from users.permissions import UserOwnerOrStaff
+from common.permissions import UserOwnerOrStaff
 from users.serializers.user_serializer import UserSerializer
 
 

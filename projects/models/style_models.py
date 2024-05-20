@@ -3,21 +3,27 @@ from django.db import models
 from common.utils.slug_generator import SlugGeneratorMixin
 
 
-class Typography(SlugGeneratorMixin):
-    slug = models.SlugField(max_length=255, unique=True, null=True)
-    name = models.CharField(max_length=255)
-    main_color = models.CharField(max_length=255)
-    secondary_color = models.CharField(max_length=255)
-    bg_color = models.CharField(max_length=255)
-
-
 class Palette(SlugGeneratorMixin):
-    slug = models.SlugField(max_length=255, unique=True, null=True)
     name = models.CharField(max_length=255)
-    font = models.FileField()
+    main_color = models.CharField(max_length=255, null=True)
+    secondary_color = models.CharField(max_length=255, null=True)
+    bg_color = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.main_color}, {self.secondary_color}, {self.bg_color})"
+
+
+class Typography(SlugGeneratorMixin):
+    name = models.CharField(max_length=255)
+    font = models.FileField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.name} {self.font}"
 
 
 class Style(SlugGeneratorMixin):
-    slug = models.SlugField(max_length=255, unique=True, null=True)
     typography = models.ForeignKey(Typography, null=True, blank=True, on_delete=models.SET_NULL)
     palette = models.ForeignKey(Palette, null=True, blank=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f"{self.typography} {self.palette}"

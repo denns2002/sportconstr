@@ -1,32 +1,42 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from common.utils.slug_generator import SlugGeneratorMixin
 from projects.models.style_models import Style
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
+class Module(SlugGeneratorMixin):
+    MODULES = [
+        ('events', 'events'),
+    ]
+
+    name = models.CharField(max_length=255, choices=MODULES)
+    description = models.TextField(blank=True, null=True)
+    req_modules = models.ManyToManyField('self', blank=True)
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Sample(SlugGeneratorMixin):
-    slug = models.SlugField(max_length=255, unique=True, null=True)
     name = models.CharField(max_length=255)
     description = models.TextField()
     image = models.ImageField(null=True, blank=True)
-    tags = models.ManyToManyField(Tag)
+    modules = models.ManyToManyField('Module', blank=True)
 
-
-class Module(models.Model):
-    name = models.CharField(max_length=255)
-    req_modules = models.ManyToManyField('self')
+    def __str__(self):
+        return str(self.name)
 
 
 class Project(SlugGeneratorMixin):
-    slug = models.SlugField(max_length=255, unique=True, null=True)
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     sample = models.ForeignKey(Sample, null=True, blank=True, on_delete=models.SET_NULL)
     style = models.ForeignKey(Style, null=True, blank=True, on_delete=models.SET_NULL)
-    modules = models.ManyToManyField(Module)
+    modules = models.ManyToManyField('Module')
+
+    def __str__(self):
+        return str(self.name)
 
