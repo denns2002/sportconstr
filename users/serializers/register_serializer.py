@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 
 
@@ -36,7 +37,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data["email"],
             is_verified=validated_data["is_verified"]
         )
-
+        Token.objects.create(user=user)
         user.set_password(validated_data["password"])
         user.save()
 

@@ -10,18 +10,18 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ['style', 'sample']
     search_fields = [
         'user', 'slug', 'name', 'created_at',
-        'sample', 'style', 'modules'
-    ]
+        'sample', 'style',
+    ]  # 'modules'
     readonly_fields = ['slug', 'created_at']
-    filter_horizontal = ['modules']
+    filter_horizontal = ['staff']  # 'modules',
 
 
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     list_display = ['name']
-    list_filter = ['req_modules']
-    search_fields = ['name', 'req_modules']
-    filter_horizontal = ['req_modules']
+    # list_filter = ['req_modules']
+    search_fields = ['name']  # 'req_modules'
+    # filter_horizontal = ['req_modules']
     readonly_fields = ['slug']
 
 

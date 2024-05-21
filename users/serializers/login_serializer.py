@@ -27,8 +27,6 @@ class LoginSerializer(serializers.ModelSerializer):
             raise AuthenticationFailed("Invalid credentials, try again.")
         if not user.is_active:
             raise AuthenticationFailed("Account disabled, contact admin.")
+        attrs['user'] = user
 
-        return {
-            "email": user.email,
-            "username": user.username,
-        }
+        return attrs

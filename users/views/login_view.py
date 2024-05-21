@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import generics, status
+from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
@@ -18,19 +19,20 @@ class LoginAPIView(generics.GenericAPIView):
         """
         user = request.data
         serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True)
+        if serializer.is_valid(raise_exception=True):
 
-        user = get_user_model().objects.get(username=serializer.data["username"])
+            user = get_user_model().objects.get(username=serializer.data["username"])
+            token, _ = Token.objects.get_or_create(user=user)
 
-        if not user.is_verified:
-            subject = 'Verify your email'
-            body = "Hi, " + user.username + \
-                   "!\nUse link to verify your email. \n\n"
-            send_token(request, "email-verify", subject, body, user, is_verification=True)
+            if not user.is_verified:
+                subject = 'Verify your email'
+                body = "Hi, " + user.username + \
+                       "!\nUse link to verify your email. \n\n"
+                send_token(request, "email-verify", subject, body, user, is_verification=True)
 
-            return Response(
-                {"OK": f"Hello, {user}! We sent you a confirmation email"},
-                status=status.HTTP_200_OK,
-            )
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(
+                    {"OK": f"Hello, {user}! We sent you a confirmation email"},
+                    status=status.HTTP_200_OK,
+                )
+            return Response({'success': True, 'token': token.key, 'id': user.id},status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

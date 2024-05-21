@@ -14,21 +14,40 @@ class CMSSerializer(serializers.ModelSerializer):
         if sum(bool(x) for x in data.values()) > 3:
              raise serializers.ValidationError({"ERROR": "Many types"})
 
+        if not data.get(data['content_type']):
+            raise serializers.ValidationError({"ERROR": "Incorrect type or content"})
+
         return data
 
     class Meta:
         model = CMS
-        fields = "__all__"
+        fields = (
+            'id',
+            'content',
+            'content_type',
+            'title',
+            'char',
+            'text',
+            'image',
+            'integer',
+            'float',
+            'datetime',
+            'bool',
+        )
         read_only_fields = ['slug']
 
 
-class CMSCharSerializer(serializers.ModelSerializer):
+class CMSTypeMixin(serializers.ModelSerializer):
     cms = CMSSerializer()
 
-    class Meta:
-        fields = ['cms', 'slug']
-        read_only_fields = ['slug']
-        model = CMSChar
+    def validate(self, data):
+        cms_type = data['cms']['content_type']
+
+        print(cms_type, self.Meta.cms_type)
+        if cms_type != self.Meta.cms_type:
+            raise serializers.ValidationError({"ERROR": "Incorrect type or content"})
+
+        return data
 
     def create(self, validated_data):
         cms_data = validated_data.pop('cms')
@@ -38,36 +57,57 @@ class CMSCharSerializer(serializers.ModelSerializer):
         return cms_type
 
 
-class CMSTextSerializer(CMSCharSerializer):
+class CMSCharSerializer(CMSTypeMixin):
     class Meta:
-        fields = ['cms', 'slug']
+        fields = ['id', 'cms', 'slug']
+        read_only_fields = ['slug']
+        model = CMSChar
+        cms_type = 'char'
+
+
+class CMSTextSerializer(CMSTypeMixin):
+    class Meta:
+        fields = ['id', 'cms', 'slug']
         read_only_fields = ['slug']
         model = CMSText
+        cms_type = 'text'
 
 
-class CMSImageSerializer(CMSCharSerializer):
+class CMSImageSerializer(CMSTypeMixin):
     class Meta:
-        fields = ['cms', 'slug']
+        fields = ['id', 'cms', 'slug']
         read_only_fields = ['slug']
         model = CMSImage
+        cms_type = 'image'
 
 
-class CMSIntegerSerializer(CMSCharSerializer):
+class CMSIntegerSerializer(CMSTypeMixin):
     class Meta:
-        fields = ['cms', 'slug']
+        fields = ['id', 'cms', 'slug']
         read_only_fields = ['slug']
         model = CMSInteger
+        cms_type = 'integer'
 
 
-class CMSFloatSerializer(CMSCharSerializer):
+class CMSFloatSerializer(CMSTypeMixin):
     class Meta:
-        fields = ['cms', 'slug']
+        fields = ['id', 'cms', 'slug']
         read_only_fields = ['slug']
         model = CMSFloat
+        cms_type = 'float'
 
 
-class CMSDatetimeSerializer(CMSCharSerializer):
+class CMSDatetimeSerializer(CMSTypeMixin):
     class Meta:
-        fields = ['cms', 'slug']
+        fields = ['id', 'cms', 'slug']
         read_only_fields = ['slug']
         model = CMSDatetime
+        cms_type = 'datetime'
+
+
+class CMSBoolSerializer(CMSTypeMixin):
+    class Meta:
+        fields = ['id', 'cms', 'slug']
+        read_only_fields = ['slug']
+        model = CMSDatetime
+        cms_type = 'bool'

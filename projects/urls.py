@@ -10,7 +10,8 @@ urlpatterns = [
     path("sample-list/", SampleListCreateAPIView.as_view(), name="sample-list"),
     path("sample-detail/<slug:slug>", SampleDetailAPIView.as_view(), name="sample-detail"),
 
-    path("module-list/", ModuleListCreateAPIView.as_view(), name="module-list"),
+    path("module-list/<slug:project_slug>", ModuleListAPIView.as_view(), name="module-list"),
+    path("module-create/", ModuleCreateAPIView.as_view(), name="module-create"),
     path("module-detail/<slug:slug>", ModuleDetailAPIView.as_view(), name="module-detail"),
 
     path("style-list/", StyleListCreateAPIView.as_view(), name="style-list"),

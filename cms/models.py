@@ -10,9 +10,10 @@ class CMS(SlugGeneratorMixin):
         ('image', 'image'),
         ('integer', "integer"),
         ('float', 'float'),
-        ('datetime', 'datetime')
+        ('datetime', 'datetime'),
+        ('bool', 'bool')
     ]
-
+    id = models.AutoField(primary_key=True)
     content_type = models.CharField(max_length=15, choices=CONTENT_TYPES)
     title = models.CharField(max_length=255, blank=True, null=True)
 
@@ -22,6 +23,7 @@ class CMS(SlugGeneratorMixin):
     integer = models.IntegerField(blank=True, null=True)
     float = models.FloatField(blank=True, null=True)
     datetime = models.DateTimeField(blank=True, null=True)
+    bool = models.BooleanField(default=False, blank=True, null=True)
 
     class Meta:
         verbose_name = verbose_name_plural = 'CMS'
@@ -40,4 +42,5 @@ class CMSImage(CMSMixin): pass
 class CMSInteger(CMSMixin): pass
 class CMSFloat(CMSMixin): pass
 class CMSDatetime(CMSMixin): pass
+class CMSBool(CMSMixin): pass
 

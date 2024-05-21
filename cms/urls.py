@@ -23,4 +23,7 @@ urlpatterns = [
 
     path("cms-datetime-create/", CMSDatetimeCreateCreateAPIView.as_view(), name="cms-datetime-create"),
     path("cms-datetime/<slug:slug>", CMSDatetimeDetailAPIView.as_view(), name="cms-datetime-detail"),
+
+    path("cms-bool-create/", CMSBoolCreateCreateAPIView.as_view(), name="cms-bool-create"),
+    path("cms-bool/<slug:slug>", CMSBoolDetailAPIView.as_view(), name="cms-bool-detail"),
 ]

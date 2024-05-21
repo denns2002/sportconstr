@@ -8,8 +8,9 @@ class CMSAdmin(admin.ModelAdmin):
     list_display = ['slug', 'content_type']
     list_filter = ['content_type']
     search_fields = [
-        'slug', 'content_type', 'char', 'text',
-        'image', 'integer', 'float', 'datetime'
+        'id', 'slug', 'content_type', 'char', 'text',
+        'image', 'integer', 'float', 'datetime', 'bool'
     ]
-    readonly_fields = ['slug']
+    readonly_fields = ['slug', 'id']
+    fields = search_fields
 

@@ -53,3 +53,7 @@ class CMSDatetimeMixin(CMSTypeMixin): queryset = CMSDatetime.objects.all(); seri
 class CMSDatetimeCreateCreateAPIView(CreateAPIView, CMSDatetimeMixin): pass
 class CMSDatetimeDetailAPIView(RetrieveUpdateDestroyAPIView, CMSDatetimeMixin): pass
 
+
+class CMSBoolMixin(CMSTypeMixin): queryset = CMSBool.objects.all(); serializer_class = CMSBoolSerializer
+class CMSBoolCreateCreateAPIView(CreateAPIView, CMSBoolMixin): pass
+class CMSBoolDetailAPIView(RetrieveUpdateDestroyAPIView, CMSBoolMixin): pass

@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models.news import News
+
+
+@admin.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    pass

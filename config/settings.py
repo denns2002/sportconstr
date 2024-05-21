@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+
+from django.urls import reverse
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -30,6 +32,7 @@ INSTALLED_APPS = [
     'projects',
     'modules',
     'rest_framework',
+    'rest_framework.authtoken',
     'drf_yasg',
 ]
 
@@ -127,6 +130,12 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ]
+}
+
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': '/users/login/',
+    'LOGOUT_URL': '/users/logout/'
 }

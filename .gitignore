@@ -2,6 +2,6 @@ venv
 .venv
 .idea
 idea
-.env
-db.sqlite3
-*/migrations
+*.env
+*db.sqlite3
+*migrations

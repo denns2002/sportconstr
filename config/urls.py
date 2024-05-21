@@ -24,4 +24,5 @@ urlpatterns = [
    path("users/", include("users.urls")),
    path("cms/", include("cms.urls")),
    path("projects/", include("projects.urls")),
+   path("modules/", include("modules.urls")),
 ]

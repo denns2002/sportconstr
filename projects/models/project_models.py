@@ -8,11 +8,16 @@ from projects.models.style_models import Style
 class Module(SlugGeneratorMixin):
     MODULES = [
         ('events', 'events'),
+        ('news', 'news'),
+        ('clubs', 'clubs'),
+        ('groups', 'groups'),
     ]
 
     name = models.CharField(max_length=255, choices=MODULES)
     description = models.TextField(blank=True, null=True)
-    req_modules = models.ManyToManyField('self', blank=True)
+    # req_modules = models.ManyToManyField('self', blank=True)
+    is_active = models.BooleanField(default=True)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return str(self.name)
@@ -30,12 +35,13 @@ class Sample(SlugGeneratorMixin):
 
 class Project(SlugGeneratorMixin):
     user = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
+    staff = models.ManyToManyField(get_user_model(), blank=True, related_name='staff')
+
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     sample = models.ForeignKey(Sample, null=True, blank=True, on_delete=models.SET_NULL)
     style = models.ForeignKey(Style, null=True, blank=True, on_delete=models.SET_NULL)
-    modules = models.ManyToManyField('Module')
 
     def __str__(self):
         return str(self.name)
